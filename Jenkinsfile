@@ -4,7 +4,7 @@ pipeline{
     stages{
         stage("Restore app"){
              when {
-                expression { env.BRANCH_NAME == 'main' }
+                expression { env.BRANCH_NAME == 'origin/main' }
             }
             steps{
                 bat "dotnet restore"
@@ -12,7 +12,7 @@ pipeline{
         }
          stage("Build app"){
             when {
-                expression { env.BRANCH_NAME == 'main' }
+                expression { env.BRANCH_NAME == 'origin/main' }
             }
             steps{
                 bat "dotnet build"
@@ -20,7 +20,7 @@ pipeline{
         }
          stage("Test app"){
              when {
-                expression { env.BRANCH_NAME == 'main' }
+                expression { env.BRANCH_NAME == 'origin/main' }
             }
             steps{
                 bat "dotnet test"
