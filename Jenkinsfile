@@ -1,22 +1,18 @@
 pipeline{
     agent any
 
-     triggers {
-        githubPush()
-    }
-
     stages{
         stage("Restore app"){
              when {
-                branch 'main'
+                expression { env.BRANCH_NAME == 'main' }
             }
             steps{
                 bat "dotnet restore"
             }
         }
          stage("Build app"){
-             when {
-                branch 'main'
+            when {
+                expression { env.BRANCH_NAME == 'main' }
             }
             steps{
                 bat "dotnet build"
@@ -24,7 +20,7 @@ pipeline{
         }
          stage("Test app"){
              when {
-                branch 'main'
+                expression { env.BRANCH_NAME == 'main' }
             }
             steps{
                 bat "dotnet test"
