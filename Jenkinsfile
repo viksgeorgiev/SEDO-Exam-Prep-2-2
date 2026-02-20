@@ -1,29 +1,34 @@
-pipeline{
+pipeline {
     agent any
-
     stages{
-        stage("Restore app"){
-             when {
-                expression { env.BRANCH_NAME == 'origin/main' }
+        stage("Restore dependencies"){
+            when {
+                expression {
+                    return env.GIT_BRANCH == 'origin/main'
+                }
             }
             steps{
                 bat "dotnet restore"
             }
         }
-         stage("Build app"){
+        stage("Build the project"){
             when {
-                expression { env.BRANCH_NAME == 'origin/main' }
+                expression {
+                    return env.GIT_BRANCH == 'origin/main'
+                }
             }
             steps{
-                bat "dotnet build"
+                bat "dotnet build --no-restore"
             }
         }
-         stage("Test app"){
-             when {
-                expression { env.BRANCH_NAME == 'origin/main' }
+        stage("Run the tests"){
+            when {
+                expression {
+                    return env.GIT_BRANCH == 'origin/main'
+                }
             }
             steps{
-                bat "dotnet test"
+                bat "dotnet test --no-build --verbosity normal"
             }
         }
     }
